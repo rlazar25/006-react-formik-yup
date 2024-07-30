@@ -1,6 +1,11 @@
 import { useFormik } from "formik";
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 function FormComponent() {
+
+    // validation types for file
+    const VALID_TYPE = ['image/png', 'image/jpg', 'image/jpeg'];
+    const KB = 1024;
+    const MB = KB * 1024;
 
     const formik = useFormik({
         // initialValue
@@ -34,7 +39,10 @@ function FormComponent() {
                 .required('Required'),
             birthDate: Yup.string()
                 .required('Required'),
-            // image: 
+            image: Yup.mixed()
+                .test('fileSize', 'File is too big... max to 2mb', (value) => value.size < MB * 2)
+                .test('fileType', 'Wrong type file', value => VALID_TYPE.includes(value.type))
+                .required('Required')
         }),
         // submitForm
         onSubmit: (values) => {
@@ -94,7 +102,7 @@ function FormComponent() {
                     name="gender"
                     value={formik.values.gender}
                     onChange={formik.handleChange}>
-                    <option value="default" disabled>Select Gender</option>
+                    <option value="" disabled>Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
@@ -103,7 +111,7 @@ function FormComponent() {
                 <input
                     type="date"
                     id="birthDate"
-                    name="nirthDate"
+                    name="birthDate"
                     value={formik.values.birthDate}
                     onChange={formik.handleChange} />
 
