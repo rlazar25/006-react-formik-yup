@@ -1,12 +1,17 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { fileParser } from "../utils/fileParser";
+import { useDispatch } from "react-redux";
+import { registerUserAction } from "../store/userSlice";
+
 function FormComponent() {
 
     // validation types for file
     const VALID_TYPE = ['image/png', 'image/jpg', 'image/jpeg'];
     const KB = 1024;
     const MB = KB * 1024;
+
+    const dispatch = useDispatch()
 
     const formik = useFormik({
         // initialValue
@@ -47,9 +52,14 @@ function FormComponent() {
         }),
         // submitForm
         onSubmit: (values) => {
-            console.log(values);
+            // console.log(values);
             fileParser(values.image)
-                .then(response => console.log(response))
+                .then(response => {
+                    // response - je image u stringu
+                    // values - {} sa svim podacima
+                    
+                    dispatch(registerUserAction({...values, image: response})); // prosledjuje u redux
+                })
                 .catch(err => console.log(err) )
             formik.resetForm();
         }
