@@ -13,9 +13,13 @@ const userSlice = createSlice({
         },
         restoreUserAction: (state, action) => {
             state.user = action.payload;
+        },
+        removeUserAction: (state, action) => {
+            state.user = {};
+            localStorage.removeItem('user_shop');
         }
     } 
 })
 
-export const {registerUserAction, restoreUserAction} = userSlice.actions;
+export const {registerUserAction, restoreUserAction, removeUserAction} = userSlice.actions;
 export default userSlice.reducer;
