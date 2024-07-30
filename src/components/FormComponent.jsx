@@ -57,8 +57,10 @@ function FormComponent() {
                 .then(response => {
                     // response - je image u stringu
                     // values - {} sa svim podacima
-                    
                     dispatch(registerUserAction({...values, image: response})); // prosledjuje u redux
+
+                    // primer za backend
+                    // UseService.saveUser({...values, image: response })
                 })
                 .catch(err => console.log(err) )
             formik.resetForm();
