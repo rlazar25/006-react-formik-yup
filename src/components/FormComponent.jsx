@@ -3,6 +3,9 @@ import * as Yup from 'yup';
 import { fileParser } from "../utils/fileParser";
 import { useDispatch } from "react-redux";
 import { registerUserAction } from "../store/userSlice";
+import { useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify";
+
 
 function FormComponent() {
 
@@ -12,6 +15,8 @@ function FormComponent() {
     const MB = KB * 1024;
 
     const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     const formik = useFormik({
         // initialValue
@@ -57,12 +62,16 @@ function FormComponent() {
                 .then(response => {
                     // response - je image u stringu
                     // values - {} sa svim podacima
-                    dispatch(registerUserAction({...values, image: response})); // prosledjuje u redux
+                    dispatch(registerUserAction({ ...values, image: response })); // prosledjuje u redux
+                    // msg for register 
+                    toast.success('Uspesno si se registrovao',);
+                    // prebacuje do homePage
+                    navigate('/');
 
                     // primer za backend
                     // UseService.saveUser({...values, image: response })
                 })
-                .catch(err => console.log(err) )
+                .catch(err => console.log(err))
             formik.resetForm();
         }
     });
