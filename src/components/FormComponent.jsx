@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
+import { fileParser } from "../utils/fileParser";
 function FormComponent() {
 
     // validation types for file
@@ -47,6 +48,10 @@ function FormComponent() {
         // submitForm
         onSubmit: (values) => {
             console.log(values);
+            fileParser(values.image)
+                .then(response => console.log(response))
+                .catch(err => console.log(err) )
+            formik.resetForm();
         }
     });
 
